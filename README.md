@@ -1,3 +1,3 @@
 # Relayer example
 
-The relayer example for the v3-operator service
+The relayer example for Stakewise v3-operator service
