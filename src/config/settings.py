@@ -5,7 +5,6 @@ from src.config.networks import NETWORKS
 relayer_host: str = config('RELAYER_HOST', default='127.0.0.1')
 relayer_port: int = config('RELAYER_PORT', cast=int, default=8000)
 
-deposit_data_path: str = config('DEPOSIT_DATA_PATH')
 signature_threshold: int = config('SIGNATURE_THRESHOLD', cast=int)
 
 validators_manager_key_file: str = config('VALIDATORS_MANAGER_KEY_FILE')

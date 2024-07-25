@@ -2831,6 +2831,21 @@ test = ["hypothesis (==4.54.0)", "pytest (>=7.0.0)", "pytest-xdist (>=2.4.0)"]
 yaml = ["ruamel.yaml (>=0.17.0)"]
 
 [[package]]
+name = "staking_deposit"
+version = "2.4.0"
+description = ""
+optional = false
+python-versions = ">=3.8,<4"
+files = []
+develop = false
+
+[package.source]
+type = "git"
+url = "https://github.com/ethereum/staking-deposit-cli.git"
+reference = "v2.4.0"
+resolved_reference = "ef89710443814331aa2f592067dc4d6995cc4f6e"
+
+[[package]]
 name = "starlette"
 version = "0.37.2"
 description = "The little ASGI library that shines."
@@ -3522,4 +3537,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "7e084cda7b4eca9e42f4bc713cc4d1c795281efeaf9acbe3cd66e18bfb544db9"
+content-hash = "e5c2900ed8c8ef75de2359b7510a9153755df22f1d7461799850940364220f6e"
