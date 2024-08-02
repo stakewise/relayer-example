@@ -55,6 +55,10 @@ async def create_validators(
 def _generate_validators(
     withdrawal_address: HexAddress, start_index: int, count: int
 ) -> list[Validator]:
+    """
+    `_generate_validators` generates validator keystores, but does not save keystores on disk.
+    todo: You should save keystores on disk to be able to exit validator manually.
+    """
     res = []
     credentials = CredentialManager.generate_credentials(
         count=count,
