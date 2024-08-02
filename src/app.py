@@ -10,7 +10,7 @@ from src.common.setup_logging import setup_logging
 from src.config import settings
 from src.validators.endpoints import router
 from src.validators.typings import AppState
-from src.validators.utils import load_validators_manager_account
+from src.validators.validators_manager import load_validators_manager_account
 
 setup_logging()
 logger = logging.getLogger(__name__)

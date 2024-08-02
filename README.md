@@ -4,7 +4,7 @@ The Relayer example for Stakewise v3-operator service
 
 Relayer-Operator api communication is described in [Operator docs](https://docs.stakewise.io/for-operators/operator-service/running-as-api-service).
 
-In this example keystores and deposit-data file were not created in advance. 
+In this example keystores and deposit-data file were not created in advance.
 Relayer generates validator credentials on the fly.
 
 ## Running with Docker
@@ -38,17 +38,18 @@ Relayer-example is Python app made with FastAPI.
 
 ```text
 src/                            # sources root
-|-- common/                     # 
+|-- common/                     #
 |   |-- abi/                    # contracts ABI
 |   |-- clients.py              # execution client
 |   |-- contracts.py            # validators registry contract
-|   |-- credentials.py          # Credential and CredentialManager used to generate keystores
 |-- config/
 |   |-- networks.py             # network configs
 |   |-- settings.py             # app settings
 |-- validators/                 #
+|   |-- credentials.py          # Credential and CredentialManager used to generate keystores
 |   |-- endpoints.py            # api endpoints
 |   |-- schema.py               # api request/response schema
-|   |-- validators_manager.py   # functions for working with validators manager
 |   |-- typings.py              # dataclasses
+|   |-- validators.py           # functions for creating validators and exit signatures
+|   |-- validators_manager.py   # functions for working with validators manager
 ```
