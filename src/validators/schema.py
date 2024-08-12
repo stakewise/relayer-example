@@ -4,8 +4,9 @@ from pydantic import BaseModel
 
 class ValidatorsRequest(BaseModel):
     vault: ChecksumAddress
-    validator_index: int
-    validators_count: int
+    validators_start_index: int
+    validators_batch_size: int
+    validators_total: int | None
 
 
 class ValidatorsResponseItem(BaseModel):

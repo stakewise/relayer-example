@@ -20,7 +20,7 @@ async def create_validators(
     validator_items = []
 
     validators = generate_validators(
-        request.vault, request.validator_index, request.validators_count
+        request.vault, request.validators_start_index, request.validators_batch_size
     )
 
     for validator in validators:
