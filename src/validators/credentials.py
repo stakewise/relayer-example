@@ -9,7 +9,7 @@ from py_ecc.optimized_bls12_381.optimized_curve import curve_order
 from staking_deposit.key_handling.key_derivation.path import path_to_nodes
 from staking_deposit.key_handling.key_derivation.tree import derive_child_SK
 from staking_deposit.settings import DEPOSIT_CLI_VERSION
-from sw_utils import get_eth1_withdrawal_credentials
+from sw_utils import get_v1_withdrawal_credentials
 from sw_utils.signing import (
     DepositData,
     DepositMessage,
@@ -51,7 +51,7 @@ class Credential:
 
     @cached_property
     def withdrawal_credentials(self) -> Bytes32:
-        return get_eth1_withdrawal_credentials(self.withdrawal_address)
+        return get_v1_withdrawal_credentials(self.withdrawal_address)
 
     @property
     def deposit_message(self) -> DepositMessage:
