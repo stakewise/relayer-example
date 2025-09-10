@@ -35,7 +35,7 @@ class ContractWrapper:
         return self.contract.events
 
     def encode_abi(self, fn_name: str, args: list | None = None) -> HexStr:
-        return self.contract.encodeABI(fn_name=fn_name, args=args)
+        return self.contract.encode_abi(fn_name=fn_name, args=args)
 
 
 class ValidatorsRegistryContract(ContractWrapper):

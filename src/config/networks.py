@@ -1,14 +1,8 @@
 from dataclasses import asdict, dataclass
 
+from sw_utils.networks import CHIADO, GNOSIS, HOODI, MAINNET
 from sw_utils.networks import NETWORKS as BASE_NETWORKS
 from sw_utils.networks import BaseNetworkConfig
-
-MAINNET = 'mainnet'
-GNOSIS = 'gnosis'
-HOODI = 'hoodi'
-CHIADO = 'chiado'
-
-GNO_NETWORKS = [GNOSIS, CHIADO]
 
 
 @dataclass
