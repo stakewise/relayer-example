@@ -1,22 +1,22 @@
 [tool.poetry]
 name = "relayer-example"
-version = "0.1.0"
+version = "0.2.0"
 description = "Relayer example for Stakewise Operator service"
 authors = ["StakeWise Labs <info@stakewise.io>"]
 package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.12,<3.13"
 python-decouple = "==3.8"
-py-ecc = "==6.0.0"
-sw-utils = {git = "https://github.com/stakewise/sw-utils.git", rev = "v0.9.7"}
-click = "==8.1.7"
+py-ecc = "==8.0.0"
+sw-utils = {git = "https://github.com/stakewise/sw-utils.git", rev = "v0.10.0"}
+click = "==8.2.1"
 tomli = "~2"
 prometheus-client = "==0.17.1"
 pyyaml = "==6.0.1"
 python-json-logger = "==2.0.7"
-fastapi = { version = "==0.115.12", extras = ["standard"] }
-staking-deposit = { git = "https://github.com/ethereum/staking-deposit-cli.git", rev = "v2.4.0" }
+fastapi = { version = "==0.116.1", extras = ["standard"] }
+staking-deposit = { git = "https://github.com/ethereum/staking-deposit-cli.git", rev = "v2.8.0" }
 
 [tool.poetry.group.dev.dependencies]
 pylint = "==3.0.1"
@@ -24,7 +24,7 @@ mypy = "==1.6.1"
 isort = "==5.12.0"
 pre-commit = "==3.5.0"
 Flake8-pyproject = "==1.2.3"
-bandit = { version = "==1.7.5", extras = ["toml"] }
+bandit = { version = "==1.8.6", extras = ["toml"] }
 black = { version = "==23.10.0", extras = ["d"] }
 flake8-print = "==5.0.0"
 flake8-datetimez = "==20.10.0"
