@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from decouple import config
 
 from src.config.networks import NETWORKS
@@ -8,12 +10,30 @@ relayer_port: int = config('RELAYER_PORT', cast=int, default=8000)
 validators_manager_key_file: str = config('VALIDATORS_MANAGER_KEY_FILE')
 validators_manager_password_file: str = config('VALIDATORS_MANAGER_PASSWORD_FILE')
 
+keystores_dir = config(
+    'KEYSTORES_DIR',
+    default='',
+)
+keystores_password_dir = config(
+    'KEYSTORES_PASSWORD_DIR',
+    default='',
+)
+keystores_password_file = config(
+    'KEYSTORES_PASSWORD_FILE',
+    default='',
+)
+keystores_dir = Path(keystores_dir) if keystores_dir else None
+keystores_password_dir = Path(keystores_password_dir) if keystores_password_dir else None
+keystores_password_file = Path(keystores_password_file) if keystores_password_file else None
+
 network: str = config('NETWORK')
 network_config = NETWORKS[network]
 
 execution_endpoint: str = config('EXECUTION_ENDPOINT')
 execution_timeout: int = config('EXECUTION_TIMEOUT', cast=int, default=60)
 execution_retry_timeout: int = config('EXECUTION_RETRY_TIMEOUT', cast=int, default=60)
+
+concurrency: int = config('CONCURRENCY', cast=int, default=1)
 
 # logging
 LOG_PLAIN = 'plain'

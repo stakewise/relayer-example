@@ -1,34 +1,46 @@
 from fastapi import APIRouter
 from web3 import Web3
 
+from src.common.app_state import AppState
 from src.common.contracts import validators_registry_contract
-from src.validators.schema import (
-    ValidatorsRequest,
-    ValidatorsResponse,
-    ValidatorsResponseItem,
+from src.validators import schema
+from src.validators.validators import (
+    generate_validators_from_keystore,
+    generate_validators_in_place,
 )
-from src.validators.validators import generate_validators
 from src.validators.validators_manager import get_validators_manager_signature
 
 router = APIRouter()
 
 
 @router.post('/validators')
-async def create_validators(
-    request: ValidatorsRequest,
-) -> ValidatorsResponse:
+async def register_validators(
+    request: schema.ValidatorsRegisterRequest,
+) -> schema.ValidatorsRegisterResponse:
     validator_items = []
-
-    validators = generate_validators(
-        request.vault, request.validators_start_index, request.validators_batch_size
-    )
+    app_state = AppState()
+    if app_state.keystore:
+        validators = generate_validators_from_keystore(
+            keystore=app_state.keystore,
+            vault_address=request.vault,
+            start_index=request.validators_start_index,
+            amounts=request.amounts,
+            validator_type=request.validator_type,
+        )
+    else:
+        validators = generate_validators_in_place(
+            vault_address=request.vault,
+            start_index=request.validators_start_index,
+            amounts=request.amounts,
+            validator_type=request.validator_type,
+        )
 
     for validator in validators:
         validator_items.append(
-            ValidatorsResponseItem(
+            schema.ValidatorsRegisterResponseItem(
                 public_key=validator.public_key,
                 deposit_signature=validator.deposit_signature,
-                amount_gwei=validator.amount_gwei,
+                amount=validator.amount,
                 exit_signature=Web3.to_hex(validator.exit_signature),
             )
         )
@@ -41,7 +53,7 @@ async def create_validators(
         validators,
     )
 
-    return ValidatorsResponse(
+    return schema.ValidatorsRegisterResponse(
         validators=validator_items,
         validators_manager_signature=validators_manager_signature,
     )

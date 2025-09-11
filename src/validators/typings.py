@@ -1,9 +1,16 @@
 from dataclasses import dataclass
+from enum import Enum
+from typing import NewType
 
-from eth_account.signers.local import LocalAccount
 from eth_typing import BLSSignature, HexStr
+from web3.types import Gwei
 
-from src.common.typings import Singleton
+BLSPrivkey = NewType('BLSPrivkey', bytes)
+
+
+class ValidatorType(Enum):
+    V1 = 'V1'
+    V2 = 'V2'
 
 
 @dataclass
@@ -11,9 +18,6 @@ class Validator:
     public_key: HexStr
     deposit_data_root: HexStr
     deposit_signature: HexStr
-    amount_gwei: int
+    amount: Gwei
     exit_signature: BLSSignature
-
-
-class AppState(metaclass=Singleton):
-    validators_manager_account: LocalAccount
+    validator_type: ValidatorType
