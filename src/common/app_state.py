@@ -6,4 +6,4 @@ from src.validators.keystore import LocalKeystore
 
 class AppState(metaclass=Singleton):
     validators_manager_account: LocalAccount
-    keystore: LocalKeystore | None = None
+    keystore: LocalKeystore

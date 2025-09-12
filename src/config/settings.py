@@ -12,19 +12,16 @@ validators_manager_password_file: str = config('VALIDATORS_MANAGER_PASSWORD_FILE
 
 keystores_dir = config(
     'KEYSTORES_DIR',
-    default='',
+    cast=Path,
 )
 keystores_password_dir = config(
     'KEYSTORES_PASSWORD_DIR',
-    default='',
+    cast=Path,
 )
 keystores_password_file = config(
     'KEYSTORES_PASSWORD_FILE',
-    default='',
+    cast=Path,
 )
-keystores_dir = Path(keystores_dir) if keystores_dir else None
-keystores_password_dir = Path(keystores_password_dir) if keystores_password_dir else None
-keystores_password_file = Path(keystores_password_file) if keystores_password_file else None
 
 network: str = config('NETWORK')
 network_config = NETWORKS[network]
