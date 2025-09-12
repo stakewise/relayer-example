@@ -1,7 +1,7 @@
 import secrets
 
 import milagro_bls_binding as bls
-from eth_typing import BLSPrivateKey, BLSSignature, ChecksumAddress
+from eth_typing import BLSPrivateKey, BLSSignature, ChecksumAddress, HexStr
 from py_ecc.optimized_bls12_381.optimized_curve import curve_order
 from sw_utils import ConsensusFork, get_exit_message_signing_root
 from web3 import Web3
@@ -90,6 +90,33 @@ def generate_validators_from_keystore(
             )
         )
 
+    return validators
+
+
+def get_validators_for_funding(
+    keystore: LocalKeystore,
+    vault_address: ChecksumAddress,
+    public_keys: list[HexStr],
+    amounts: list[Gwei],
+) -> list[Validator]:
+    validators = []
+    for public_key, amount in zip(public_keys, amounts):
+        if public_key not in keystore:
+            raise RuntimeError(f'Public key {public_key} not found in keystores')
+        deposit_data = keystore.get_deposit_data(
+            public_key=public_key,
+            amount=amount,
+            vault_address=vault_address,
+            validator_type=ValidatorType.V2,
+        )
+        validators.append(
+            Validator(
+                public_key=Web3.to_hex(deposit_data['pubkey']),
+                deposit_signature=Web3.to_hex(deposit_data['signature']),
+                amount=amount,
+                deposit_data_root=Web3.to_hex(deposit_data['deposit_data_root']),
+            )
+        )
     return validators
 
 

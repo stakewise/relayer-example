@@ -22,3 +22,20 @@ class ValidatorsRegisterResponseItem(BaseModel):
 class ValidatorsRegisterResponse(BaseModel):
     validators: list[ValidatorsRegisterResponseItem]
     validators_manager_signature: HexStr
+
+
+class ValidatorsFundRequest(BaseModel):
+    vault: ChecksumAddress
+    public_keys: list[HexStr]
+    amounts: list[Gwei]
+
+
+class ValidatorsFundResponseItem(BaseModel):
+    public_key: HexStr
+    deposit_signature: HexStr
+    amount: Gwei
+
+
+class ValidatorsFundResponse(BaseModel):
+    validators: list[ValidatorsFundResponseItem]
+    validators_manager_signature: HexStr

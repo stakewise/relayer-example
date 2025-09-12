@@ -19,5 +19,5 @@ class Validator:
     deposit_data_root: HexStr
     deposit_signature: HexStr
     amount: Gwei
-    exit_signature: BLSSignature
-    validator_type: ValidatorType
+    validator_type: ValidatorType = ValidatorType.V2
+    exit_signature: BLSSignature | None = None

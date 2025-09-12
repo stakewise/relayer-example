@@ -105,6 +105,6 @@ exclude = '''
 [tool.vulture]
 ignore_names = [
     "app_instance",
-    "register_validators", "get_info"  # used in API routes
+    "register_validators", "fund_validators", "get_info"  # used in API routes
 ]
 ignore_decorators = ["@router"]
