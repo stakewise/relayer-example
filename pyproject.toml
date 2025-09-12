@@ -49,7 +49,9 @@ disable = [
     "R0801",  # duplicate-code
     "R0903",  # too-few-public-methods
     "W0703",  # broad-except
-    "W0718"   # broad-exception-caught
+    "W0718",   # broad-exception-caught
+    "W0511",  # todo (fixme)
+
 ]
 ignore-paths=["src/.*/tests/.*", "src/test_fixtures/.*"]
 ignore=["conftest.py"]
@@ -99,3 +101,10 @@ exclude = '''
   | dist
 )/
 '''
+
+[tool.vulture]
+ignore_names = [
+    "app_instance",
+    "register_validators", "get_info"  # used in API routes
+]
+ignore_decorators = ["@router"]
