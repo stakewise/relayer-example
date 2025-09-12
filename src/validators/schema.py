@@ -39,3 +39,19 @@ class ValidatorsFundResponseItem(BaseModel):
 class ValidatorsFundResponse(BaseModel):
     validators: list[ValidatorsFundResponseItem]
     validators_manager_signature: HexStr
+
+
+class ValidatorsWithdrawalRequest(BaseModel):
+    vault: ChecksumAddress
+    public_keys: list[HexStr]
+    amounts: list[Gwei]
+
+
+class ValidatorsConsolidationRequest(BaseModel):
+    vault: ChecksumAddress
+    source_public_keys: list[HexStr]
+    target_public_keys: list[HexStr]
+
+
+class ValidatorsSignatureResponse(BaseModel):
+    validators_manager_signature: HexStr
