@@ -4,11 +4,7 @@ from web3 import Web3
 from src.common.app_state import AppState
 from src.common.contracts import VaultContract, validators_registry_contract
 from src.validators import schema
-from src.validators.validators import (
-    generate_validators_from_keystore,
-    generate_validators_in_place,
-    get_validators_for_funding,
-)
+from src.validators.validators import generate_validators, get_validators_for_funding
 from src.validators.validators_manager import (
     get_validators_manager_signature_consolidation,
     get_validators_manager_signature_funding,
@@ -25,21 +21,13 @@ async def register_validators(
 ) -> schema.ValidatorsRegisterResponse:
     validator_items = []
     app_state = AppState()
-    if app_state.keystore:
-        validators = generate_validators_from_keystore(
-            keystore=app_state.keystore,
-            vault_address=request.vault,
-            start_index=request.validators_start_index,
-            amounts=request.amounts,
-            validator_type=request.validator_type,
-        )
-    else:
-        validators = generate_validators_in_place(
-            vault_address=request.vault,
-            start_index=request.validators_start_index,
-            amounts=request.amounts,
-            validator_type=request.validator_type,
-        )
+    validators = generate_validators(
+        keystore=app_state.keystore,
+        vault_address=request.vault,
+        start_index=request.validators_start_index,
+        amounts=request.amounts,
+        validator_type=request.validator_type,
+    )
 
     for validator in validators:
         validator_items.append(

@@ -4,8 +4,6 @@ from functools import cached_property
 import milagro_bls_binding as bls
 from eth_typing import BLSPrivateKey, ChecksumAddress, HexStr
 from py_ecc.bls import G2ProofOfPossession
-from staking_deposit.key_handling.key_derivation.path import path_to_nodes
-from staking_deposit.key_handling.key_derivation.tree import derive_child_SK
 from staking_deposit.settings import DEPOSIT_CLI_VERSION
 from sw_utils import get_v1_withdrawal_credentials, get_v2_withdrawal_credentials
 from sw_utils.signing import (
@@ -19,11 +17,6 @@ from web3 import Web3
 
 from src.config.networks import NETWORKS
 from src.validators.typings import ValidatorType
-
-# Set path as EIP-2334 format
-# https://eips.ethereum.org/EIPS/eip-2334
-PURPOSE = '12381'
-COIN_TYPE = '3600'
 
 
 @dataclass
@@ -48,8 +41,6 @@ class Credential:
 
     @cached_property
     def withdrawal_credentials(self) -> Bytes32:
-        if not self.vault:
-            raise ValueError('Vault address for credential is not set')
         if self.validator_type == ValidatorType.V1:
             return get_v1_withdrawal_credentials(self.vault)
         return get_v2_withdrawal_credentials(self.vault)
@@ -84,38 +75,3 @@ class Credential:
             signature=bls.Sign(self.private_key_bytes, signing_root),
         )
         return signed_deposit
-
-
-class CredentialManager:
-    @staticmethod
-    def generate_credential(
-        network: str,
-        vault: ChecksumAddress,
-        private_key: BLSPrivateKey,
-        index: int,
-        validator_type: ValidatorType,
-    ) -> Credential:
-        signing_key_path = f'm/{PURPOSE}/{COIN_TYPE}/{index}/0/0'
-        nodes = path_to_nodes(signing_key_path)
-
-        for node in nodes:
-            private_key = BLSPrivateKey(derive_child_SK(parent_SK=private_key, index=node))
-
-        return Credential(
-            private_key=private_key,
-            path=signing_key_path,
-            network=network,
-            vault=vault,
-            validator_type=validator_type,
-        )
-
-    @staticmethod
-    def load_credential(
-        network: str,
-        vault: ChecksumAddress,
-        private_key: BLSPrivateKey,
-        validator_type: ValidatorType,
-    ) -> Credential:
-        return Credential(
-            private_key=private_key, network=network, vault=vault, validator_type=validator_type
-        )

@@ -14,7 +14,7 @@ from sw_utils.typings import ConsensusFork
 from web3 import Web3
 
 from src.config import settings
-from src.validators.credentials import CredentialManager
+from src.validators.credentials import Credential
 from src.validators.typings import BLSPrivkey, ValidatorType
 
 logger = logging.getLogger(__name__)
@@ -91,7 +91,7 @@ class LocalKeystore:
         validator_type: ValidatorType,
     ) -> dict:
         private_key = self.keys[public_key]
-        credential = CredentialManager.load_credential(
+        credential = Credential(
             network=settings.network,
             private_key=BLSPrivateKey(Web3.to_int(private_key)),
             vault=vault_address,

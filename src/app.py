@@ -28,9 +28,8 @@ async def lifespan(app_instance: FastAPI) -> AsyncIterator:  # pylint:disable=un
     logger.info('validators manager address: %s', validators_manager.address)
 
     # load keystore
-    if settings.keystores_dir:
-        keystore = await LocalKeystore.load()
-        app_state.keystore = keystore
+    keystore = await LocalKeystore.load()
+    app_state.keystore = keystore
 
     yield
 
