@@ -14,17 +14,21 @@ from src.config import settings
 
 class ContractWrapper:
     abi_path: str = ''
+    settings_key: str = ''
+
+    def __init__(self, address: ChecksumAddress | None = None):
+        self.address = address
+
+    @property
+    def contract_address(self) -> ChecksumAddress:
+        return self.address or getattr(settings.network_config, self.settings_key)
 
     @cached_property
     def contract(self) -> AsyncContract:
         current_dir = os.path.dirname(__file__)
         with open(os.path.join(current_dir, self.abi_path), encoding='utf-8') as f:
             abi = json.load(f)
-        return execution_client.eth.contract(abi=abi, address=self.address)
-
-    @property
-    def address(self) -> ChecksumAddress:
-        raise NotImplementedError
+        return execution_client.eth.contract(abi=abi, address=self.contract_address)
 
     @property
     def functions(self) -> AsyncContractFunctions:
@@ -40,14 +44,18 @@ class ContractWrapper:
 
 class ValidatorsRegistryContract(ContractWrapper):
     abi_path = 'abi/IValidatorsRegistry.json'
-
-    @property
-    def address(self) -> ChecksumAddress:
-        return settings.network_config.VALIDATORS_REGISTRY_CONTRACT_ADDRESS
+    settings_key = 'VALIDATORS_REGISTRY_CONTRACT_ADDRESS'
 
     async def get_registry_root(self) -> Bytes32:
         """Fetches the latest validators registry root."""
         return await self.contract.functions.get_deposit_root().call()
+
+
+class VaultContract(ContractWrapper):
+    abi_path = 'abi/IEthVault.json'
+
+    async def validators_manager_nonce(self) -> int:
+        return await self.contract.functions.validatorsManagerNonce().call()
 
 
 validators_registry_contract = ValidatorsRegistryContract()
