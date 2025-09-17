@@ -4,8 +4,7 @@ The Relayer example for Stakewise v3-operator service
 
 Relayer-Operator api communication is described in [Operator docs](https://docs.stakewise.io/for-operators/operator-service/running-as-api-service).
 
-In this example keystores and deposit-data file were not created in advance.
-Relayer generates validator credentials on the fly.
+In this example, keystores are stored in a local folder.
 
 ## Running with Docker
 
@@ -34,6 +33,131 @@ europe-west4-docker.pkg.dev/stakewiselabs/public/relayer-example
 
 Relayer-example is Python app made with FastAPI.
 
+## API Endpoints
+
+#### Register New Validators
+
+**POST** `/validators`
+**Request Body**:
+
+```
+{
+  "vault": "0x1234...",
+  "validators_start_index": int,
+  "amounts": int[],
+  "validator_type": "ValidatorType"
+}
+```
+- `vault` - Address of the vault contract to which the validators will be registered.
+- `validators_start_index` - Validator index for the first validator in the batch.
+- `amounts` - List of deposit amounts for each validator. Value provided in Gwei.
+- `validator_type` - Type of validator to create. Possible values: `V1` or `V2`.
+
+**Response:**
+```
+{
+  "validators": [
+    {
+      "public_key": "string",
+      "deposit_signature": "string",
+      "amount": int,
+      "exit_signature": "string"
+    }
+  ],
+  "validators_manager_signature": "string"
+}
+```
+
+---
+
+#### Fund Compounding Validators
+**POST** `/fund`
+**Request Body:**
+```
+{
+  "vault": "0x1234...",
+  "public_keys": str[],
+  "amounts": int[]
+}
+```
+- `vault` - Address of the vault contract to which the validators will be funded.
+- `public_keys` - List of public keys of validators to fund.
+- `amounts` - List of amounts to fund into each validator. Value provided in Gwei.
+
+**Response:**
+```
+{
+  "validators": [
+    {
+      "public_key": "string",
+      "deposit_signature": "string",
+      "amount": int
+    }
+  ],
+  "validators_manager_signature": "string"
+}
+```
+
+---
+
+#### Get Signature for Withdraw Funds from Validators Transaction
+**POST** `/withdraw`
+**Request Body:**
+```
+{
+  "vault": "0x1234...",
+  "public_keys": str[],
+  "amounts": int[]
+}
+```
+- `vault` - Address of the vault contract to which the validators will be withdrawn.
+- `public_keys` - List of public keys of validators to withdraw from.
+- `amounts` - List of amounts to withdraw from each validator. Value provided in Gwei.
+
+**Response:**
+```
+{
+  "validators_manager_signature": "string"
+}
+```
+
+---
+
+#### Get Signature for Consolidate Validators Transaction
+**POST** `/consolidate`
+**Request Body:**
+```
+{
+  "vault": "0x1234...",
+  "source_public_keys": str[],
+  "target_public_keys": str[]
+}
+```
+- `vault` - Address of the vault contract to which the validators will be consolidated.
+- `source_public_keys` - List of public keys of validators to consolidate from.
+- `target_public_keys` - List of public keys of validators to consolidate to.
+
+**Response:**
+```
+{
+  "validators_manager_signature": "string"
+}
+```
+
+---
+
+
+#### Fetch info about relayer
+**Get** `/info`
+
+**Response:**
+```
+{
+  "network": "string"
+}
+```
+
+
 ### Folders structure
 
 ```text
@@ -48,6 +172,7 @@ src/                            # sources root
 |-- validators/                 #
 |   |-- credentials.py          # Credential and CredentialManager used to generate keystores
 |   |-- endpoints.py            # api endpoints
+|   |-- keystore.py             # local keystore storage
 |   |-- schema.py               # api request/response schema
 |   |-- typings.py              # dataclasses
 |   |-- validators.py           # functions for creating validators and exit signatures
