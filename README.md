@@ -35,12 +35,12 @@ Relayer-example is Python app made with FastAPI.
 
 ## API Endpoints
 
-#### Register New Validators
+### Register New Validators
 
 **POST** `/validators`
 **Request Body**:
 
-```
+```json
 {
   "vault": "0x1234...",
   "validators_start_index": int,
@@ -48,13 +48,15 @@ Relayer-example is Python app made with FastAPI.
   "validator_type": "ValidatorType"
 }
 ```
+
 - `vault` - Address of the vault contract to which the validators will be registered.
 - `validators_start_index` - Validator index for the first validator in the batch.
 - `amounts` - List of deposit amounts for each validator. Value provided in Gwei.
 - `validator_type` - Type of validator to create. Possible values: `V1` or `V2`.
 
 **Response:**
-```
+
+```json
 {
   "validators": [
     {
@@ -70,22 +72,26 @@ Relayer-example is Python app made with FastAPI.
 
 ---
 
-#### Fund Compounding Validators
+### Fund Compounding Validators
+
 **POST** `/fund`
 **Request Body:**
-```
+
+```json
 {
   "vault": "0x1234...",
   "public_keys": str[],
   "amounts": int[]
 }
 ```
+
 - `vault` - Address of the vault contract to which the validators will be funded.
 - `public_keys` - List of public keys of validators to fund.
 - `amounts` - List of amounts to fund into each validator. Value provided in Gwei.
 
 **Response:**
-```
+
+```json
 {
   "validators": [
     {
@@ -100,22 +106,26 @@ Relayer-example is Python app made with FastAPI.
 
 ---
 
-#### Get Signature for Withdraw Funds from Validators Transaction
+### Get Signature for Withdraw Funds from Validators Transaction
+
 **POST** `/withdraw`
 **Request Body:**
-```
+
+```json
 {
   "vault": "0x1234...",
   "public_keys": str[],
   "amounts": int[]
 }
 ```
+
 - `vault` - Address of the vault contract to which the validators will be withdrawn.
 - `public_keys` - List of public keys of validators to withdraw from.
 - `amounts` - List of amounts to withdraw from each validator. Value provided in Gwei.
 
 **Response:**
-```
+
+```json
 {
   "validators_manager_signature": "string"
 }
@@ -123,22 +133,26 @@ Relayer-example is Python app made with FastAPI.
 
 ---
 
-#### Get Signature for Consolidate Validators Transaction
+### Get Signature for Consolidate Validators Transaction
+
 **POST** `/consolidate`
 **Request Body:**
-```
+
+```json
 {
   "vault": "0x1234...",
   "source_public_keys": str[],
   "target_public_keys": str[]
 }
 ```
+
 - `vault` - Address of the vault contract to which the validators will be consolidated.
 - `source_public_keys` - List of public keys of validators to consolidate from.
 - `target_public_keys` - List of public keys of validators to consolidate to.
 
 **Response:**
-```
+
+```json
 {
   "validators_manager_signature": "string"
 }
@@ -146,17 +160,17 @@ Relayer-example is Python app made with FastAPI.
 
 ---
 
+### Fetch info about relayer
 
-#### Fetch info about relayer
 **Get** `/info`
 
 **Response:**
-```
+
+```json
 {
   "network": "string"
 }
 ```
-
 
 ### Folders structure
 
