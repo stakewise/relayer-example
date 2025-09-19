@@ -168,7 +168,7 @@ Relayer-example is Python app made with FastAPI.
 
 ```json
 {
-  "network": "string"
+  "network": "mainnet"
 }
 ```
 
