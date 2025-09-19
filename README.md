@@ -43,9 +43,9 @@ Relayer-example is Python app made with FastAPI.
 ```json
 {
   "vault": "0x1234...",
-  "validators_start_index": int,
-  "amounts": int[],
-  "validator_type": "ValidatorType"
+  "validators_start_index": 20551,
+  "amounts": [32000000000],
+  "validator_type": "0x02"
 }
 ```
 
@@ -60,13 +60,13 @@ Relayer-example is Python app made with FastAPI.
 {
   "validators": [
     {
-      "public_key": "string",
-      "deposit_signature": "string",
-      "amount": int,
-      "exit_signature": "string"
+      "public_key":  "0xPubKey1",
+      "deposit_signature": "0xDepositSig1",
+      "amount": 32000000000,
+      "exit_signature": "0xExitSig1"
     }
   ],
-  "validators_manager_signature": "string"
+  "validators_manager_signature": "0xManagerSig"
 }
 ```
 
@@ -80,8 +80,8 @@ Relayer-example is Python app made with FastAPI.
 ```json
 {
   "vault": "0x1234...",
-  "public_keys": str[],
-  "amounts": int[]
+  "public_keys":  ["0xPubKey1"],
+  "amounts": [2000000000]
 }
 ```
 
@@ -95,12 +95,12 @@ Relayer-example is Python app made with FastAPI.
 {
   "validators": [
     {
-      "public_key": "string",
-      "deposit_signature": "string",
-      "amount": int
+      "public_key": "0xPubKey1",
+      "deposit_signature": "0xDepositSig1",
+      "amount": 2000000000
     }
   ],
-  "validators_manager_signature": "string"
+  "validators_manager_signature": "0xManagerSig"
 }
 ```
 
@@ -114,8 +114,8 @@ Relayer-example is Python app made with FastAPI.
 ```json
 {
   "vault": "0x1234...",
-  "public_keys": str[],
-  "amounts": int[]
+  "public_keys":  ["0xPubKey1", "0xPubKey2"],
+  "amounts": [55000000000, 0]
 }
 ```
 
@@ -127,7 +127,7 @@ Relayer-example is Python app made with FastAPI.
 
 ```json
 {
-  "validators_manager_signature": "string"
+  "validators_manager_signature": "0xManagerSig"
 }
 ```
 
@@ -141,8 +141,8 @@ Relayer-example is Python app made with FastAPI.
 ```json
 {
   "vault": "0x1234...",
-  "source_public_keys": str[],
-  "target_public_keys": str[]
+  "source_public_keys": ["0xPubKey1", "0xPubKey2"],
+  "target_public_keys": ["0xPubKey3", "0xPubKey3"]
 }
 ```
 
@@ -154,7 +154,7 @@ Relayer-example is Python app made with FastAPI.
 
 ```json
 {
-  "validators_manager_signature": "string"
+  "validators_manager_signature": "0xManagerSig"
 }
 ```
 
@@ -178,8 +178,13 @@ Relayer-example is Python app made with FastAPI.
 src/                            # sources root
 |-- common/                     #
 |   |-- abi/                    # contracts ABI
+|   |-- app_state/              # store app state
 |   |-- clients.py              # execution client
 |   |-- contracts.py            # validators registry contract
+|   |-- endpoints.py            # info api endpoint
+|   |-- schema.py               # api request/response schema
+|   |-- setup_logging.py        # logging scheme setup
+|   |-- typings.py              # comon types
 |-- config/
 |   |-- networks.py             # network configs
 |   |-- settings.py             # app settings
