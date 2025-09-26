@@ -1,11 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import NewType
 
 from eth_typing import BLSSignature, HexStr
 from web3.types import Gwei
-
-BLSPrivkey = NewType('BLSPrivkey', bytes)
 
 
 class ValidatorType(Enum):
