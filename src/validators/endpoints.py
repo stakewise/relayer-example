@@ -58,13 +58,12 @@ async def fund_validators(
 ) -> schema.ValidatorsSignatureResponse:
     validators = []
 
-    # use empty signature and withdrawal credentials for funding
+    # use empty signature for funding
     empty_signature = bytes(96)
-    empty_withdrawal_credentials = bytes(32)
     for public_key, amount in zip(request.public_keys, request.amounts):
         deposit_data = DepositData(
             pubkey=Web3.to_bytes(hexstr=public_key),
-            withdrawal_credentials=empty_withdrawal_credentials,
+            withdrawal_credentials=request.vault,
             amount=amount,
             signature=empty_signature,
         )
