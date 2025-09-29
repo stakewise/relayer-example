@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from sw_utils import DepositData
+from sw_utils import DepositData, get_v2_withdrawal_credentials
 from web3 import Web3
 
 from src.common.contracts import VaultContract, validators_registry_contract
@@ -63,7 +63,7 @@ async def fund_validators(
     for public_key, amount in zip(request.public_keys, request.amounts):
         deposit_data = DepositData(
             pubkey=Web3.to_bytes(hexstr=public_key),
-            withdrawal_credentials=request.vault,
+            withdrawal_credentials=get_v2_withdrawal_credentials(request.vault),
             amount=amount,
             signature=empty_signature,
         )
@@ -71,7 +71,7 @@ async def fund_validators(
             public_key=public_key,
             amount=amount,
             deposit_signature=Web3.to_hex(empty_signature),
-            deposit_data_root=deposit_data.hash_tree_root,
+            deposit_data_root=Web3.to_hex(deposit_data.hash_tree_root),
         )
         validators.append(validator)
 

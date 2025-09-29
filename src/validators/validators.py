@@ -40,6 +40,7 @@ def generate_validators(
                 deposit_signature=Web3.to_hex(deposit_datum_dict['signature']),
                 amount=amount,
                 exit_signature=exit_signature,
+                validator_type=validator_type,
             )
         )
     return res
