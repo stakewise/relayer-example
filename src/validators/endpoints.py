@@ -1,10 +1,11 @@
 from fastapi import APIRouter
+from sw_utils import DepositData, get_v2_withdrawal_credentials
 from web3 import Web3
 
-from src.common.app_state import AppState
 from src.common.contracts import VaultContract, validators_registry_contract
 from src.validators import schema
-from src.validators.validators import generate_validators, get_validators_for_funding
+from src.validators.typings import Validator
+from src.validators.validators import generate_validators
 from src.validators.validators_manager import (
     get_validators_manager_signature_consolidation,
     get_validators_manager_signature_funding,
@@ -15,14 +16,12 @@ from src.validators.validators_manager import (
 router = APIRouter()
 
 
-@router.post('/validators')
+@router.post('/register')
 async def register_validators(
     request: schema.ValidatorsRegisterRequest,
 ) -> schema.ValidatorsRegisterResponse:
     validator_items = []
-    app_state = AppState()
     validators = generate_validators(
-        keystore=app_state.keystore,
         vault_address=request.vault,
         start_index=request.validators_start_index,
         amounts=request.amounts,
@@ -56,27 +55,25 @@ async def register_validators(
 @router.post('/fund')
 async def fund_validators(
     request: schema.ValidatorsFundRequest,
-) -> schema.ValidatorsFundResponse:
-    validator_items = []
-    app_state = AppState()
-    if not app_state.keystore:
-        raise ValueError('Keystore is required for funding validators')
+) -> schema.ValidatorsSignatureResponse:
+    validators = []
 
-    validators = get_validators_for_funding(
-        keystore=app_state.keystore,
-        vault_address=request.vault,
-        public_keys=request.public_keys,
-        amounts=request.amounts,
-    )
-
-    for validator in validators:
-        validator_items.append(
-            schema.ValidatorsFundResponseItem(
-                public_key=validator.public_key,
-                deposit_signature=validator.deposit_signature,
-                amount=validator.amount,
-            )
+    # use empty signature for funding
+    empty_signature = bytes(96)
+    for public_key, amount in zip(request.public_keys, request.amounts):
+        deposit_data = DepositData(
+            pubkey=Web3.to_bytes(hexstr=public_key),
+            withdrawal_credentials=get_v2_withdrawal_credentials(request.vault),
+            amount=amount,
+            signature=empty_signature,
         )
+        validator = Validator(
+            public_key=public_key,
+            amount=amount,
+            deposit_signature=Web3.to_hex(empty_signature),
+            deposit_data_root=Web3.to_hex(deposit_data.hash_tree_root),
+        )
+        validators.append(validator)
 
     vault_contact = VaultContract(request.vault)
     validators_manager_nonce = await vault_contact.validators_manager_nonce()
@@ -86,8 +83,7 @@ async def fund_validators(
         validators,
     )
 
-    return schema.ValidatorsFundResponse(
-        validators=validator_items,
+    return schema.ValidatorsSignatureResponse(
         validators_manager_signature=validators_manager_signature,
     )
 

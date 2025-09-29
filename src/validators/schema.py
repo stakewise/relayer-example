@@ -30,17 +30,6 @@ class ValidatorsFundRequest(BaseModel):
     amounts: list[Gwei]
 
 
-class ValidatorsFundResponseItem(BaseModel):
-    public_key: HexStr
-    deposit_signature: HexStr
-    amount: Gwei
-
-
-class ValidatorsFundResponse(BaseModel):
-    validators: list[ValidatorsFundResponseItem]
-    validators_manager_signature: HexStr
-
-
 class ValidatorsWithdrawalRequest(BaseModel):
     vault: ChecksumAddress
     public_keys: list[HexStr]

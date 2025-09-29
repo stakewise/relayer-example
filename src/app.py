@@ -11,7 +11,6 @@ from src.common.endpoints import router as info_router
 from src.common.setup_logging import setup_logging
 from src.config import settings
 from src.validators.endpoints import router
-from src.validators.keystore import LocalKeystore
 from src.validators.validators_manager import load_validators_manager_account
 
 setup_logging()
@@ -26,10 +25,6 @@ async def lifespan(app_instance: FastAPI) -> AsyncIterator:  # pylint:disable=un
     validators_manager = load_validators_manager_account()
     app_state.validators_manager_account = validators_manager
     logger.info('validators manager address: %s', validators_manager.address)
-
-    # load keystore
-    keystore = await LocalKeystore.load()
-    app_state.keystore = keystore
 
     yield
 
