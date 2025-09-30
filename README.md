@@ -2,7 +2,7 @@
 
 The Relayer example for Stakewise v3-operator service
 
-Relayer-Operator api communication is described in [Operator docs](https://docs.stakewise.io/for-operators/operator-service/running-as-api-service).
+Relayer-Operator api communication is described in [Operator docs](https://docs.stakewise.io/operator/alternative-key-management/api-mode).
 
 In this example keystores and deposit-data file were not created in advance.
 Relayer generates validator credentials on the fly.
