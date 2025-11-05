@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "relayer-example"
-version = "0.2.0"
+version = "0.2.1"
 description = "Relayer example for Stakewise Operator service"
 authors = ["StakeWise Labs <info@stakewise.io>"]
 package-mode = false
