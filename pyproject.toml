@@ -9,7 +9,7 @@ package-mode = false
 python = ">=3.12,<3.13"
 python-decouple = "==3.8"
 py-ecc = "==8.0.0"
-sw-utils = {git = "https://github.com/stakewise/sw-utils.git", rev = "v0.10.0"}
+sw-utils = {git = "https://github.com/stakewise/sw-utils.git", rev = "v0.12.9"}
 click = "==8.2.1"
 tomli = "~2"
 prometheus-client = "==0.17.1"
