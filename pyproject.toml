@@ -107,6 +107,7 @@ ignore_names = [
     "app_instance",
     "register_validators", "fund_validators",  # used in API routes
     "withdraw_validators", "consolidate_validators",  # used in API routes
-    "get_info"  # used in API routes
+    "get_info",  # used in API routes
+    "validators_manager_address",  # pydantic field
 ]
 ignore_decorators = ["@router"]
