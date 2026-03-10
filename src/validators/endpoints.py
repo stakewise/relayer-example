@@ -75,8 +75,8 @@ async def fund_validators(
         )
         validators.append(validator)
 
-    vault_contact = VaultContract(request.vault)
-    validators_manager_nonce = await vault_contact.validators_manager_nonce()
+    vault_contract = VaultContract(request.vault)
+    validators_manager_nonce = await vault_contract.validators_manager_nonce()
     validators_manager_signature = get_validators_manager_signature_funding(
         Web3.to_checksum_address(request.vault),
         validators_manager_nonce,
@@ -92,8 +92,8 @@ async def fund_validators(
 async def withdraw_validators(
     request: schema.ValidatorsWithdrawalRequest,
 ) -> schema.ValidatorsSignatureResponse:
-    vault_contact = VaultContract(request.vault)
-    validators_manager_nonce = await vault_contact.validators_manager_nonce()
+    vault_contract = VaultContract(request.vault)
+    validators_manager_nonce = await vault_contract.validators_manager_nonce()
     validators_manager_signature = get_validators_manager_signature_withdrawal(
         Web3.to_checksum_address(request.vault),
         validators_manager_nonce,
@@ -110,8 +110,8 @@ async def withdraw_validators(
 async def consolidate_validators(
     request: schema.ValidatorsConsolidationRequest,
 ) -> schema.ValidatorsSignatureResponse:
-    vault_contact = VaultContract(request.vault)
-    validators_manager_nonce = await vault_contact.validators_manager_nonce()
+    vault_contract = VaultContract(request.vault)
+    validators_manager_nonce = await vault_contract.validators_manager_nonce()
     validators_manager_signature = get_validators_manager_signature_consolidation(
         Web3.to_checksum_address(request.vault),
         validators_manager_nonce,
